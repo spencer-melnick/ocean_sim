@@ -19,8 +19,12 @@ class ComplexNumber:
         return ComplexNumber(real, imaginary)
 
     def __mul__(self, obj):
-        real = (self.real * obj.real) - (self.imaginary * obj.imaginary)
-        imaginary = (self.real * obj.imaginary) + (self.imaginary * obj.real)
+        if isinstance(obj, ComplexNumber):
+            real = (self.real * obj.real) - (self.imaginary * obj.imaginary)
+            imaginary = (self.real * obj.imaginary) + (self.imaginary * obj.real)
+        else:
+            real = self.real * obj
+            imaginary = self.imaginary * imaginary
         return ComplexNumber(real, imaginary)
 
     def __neg__(self):
