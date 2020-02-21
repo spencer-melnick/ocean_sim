@@ -26,8 +26,11 @@ class ComplexNumber:
             imaginary = (self.real * obj.imaginary) + (self.imaginary * obj.real)
         else:
             real = self.real * obj
-            imaginary = self.imaginary * imaginary
+            imaginary = self.imaginary * obj
         return ComplexNumber(real, imaginary)
+
+    def __rmul__(self, obj):
+        return self * obj
 
     def __neg__(self):
         real = -self.real

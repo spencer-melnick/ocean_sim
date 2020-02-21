@@ -38,6 +38,17 @@ def generate_gaussian_distribution(length):
 
     return z1, z2
 
+def gaussian2(N1, N2):
+    g1 = []
+    g2 = []
+
+    for _ in range(N1):
+        z1, z2 = generate_gaussian_distribution(N2)
+        g1.append(z1)
+        g2.append(z2)
+
+    return g1, g2
+
 def main():
     u1 = generate_uniform_distribution(512)
     z1, _ = generate_gaussian_distribution(512)
