@@ -54,11 +54,12 @@ def h0_tilde2(N, L, W, A = 1, g = 9.81):
 
 def main():
     g = 9.81
-    A = 1
-    W = Vector2(2, 2)
+    A = 4
+    W = Vector2(30, 30)
     N = 256
+    L = 1000
 
-    h0_t = h0_tilde2(N, 10, W, A, g)
+    h0_t = h0_tilde2(N, L, W, A, g)
 
     h0_image = Image.new(mode = "RGB", size = (N, N))
     h0_pixels = h0_image.load()
@@ -66,7 +67,7 @@ def main():
     for row in range(N):
         for column in range(N):
             num = h0_t[row][column]
-            h0_pixels[row, column] = (int(255 * 100 * num.real), int(255 * 100 * num.imaginary), 0)
+            h0_pixels[row, column] = (int(255 * num.real), int(255 * num.imaginary), 0)
 
     h0_image.show()
         
