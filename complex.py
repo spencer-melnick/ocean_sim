@@ -40,6 +40,11 @@ class ComplexNumber:
     def __str__(self):
         return "{}+{}i".format(self.real, self.imaginary)
 
+    def conjugate(self):
+        real = self.real
+        imaginary = -self.imaginary
+        return ComplexNumber(real, imaginary)
+
     @staticmethod
     def exp(val):
         real = math.exp(val.real) * math.cos(val.imaginary)

@@ -8,6 +8,16 @@ from complex import ComplexNumber
 if __name__ == "__main__":
     from PIL import Image
 
+def to_k(n, m, N, M, L):
+    kx = math.pi * (2 * n - N) / L
+    ky = math.pi * (2 * m - N) / L
+    return Vector2(kx, ky)
+
+def from_k(k, N, M, L):
+    n = ((L * k.x / math.pi) + N) / 2
+    m = ((L * k.y / math.pi) + N) / 2
+    return (n, m)
+
 def phillips(K, W, A = 1, g = 9.81):
     L = W.magnitude2() / g
     l = L / 1000
@@ -39,11 +49,9 @@ def h0_tilde2(N, L, W, A = 1, g = 9.81):
     for row in range(N):
         F.append([])
         for column in range(N):
-            kx = math.pi * (2 * column - N) / L
-            ky = math.pi * (2 * row - N) / L
-            k = Vector2(kx, ky)
+            k = to_k(row, column, N, N, L)
 
-            if (kx == 0) and (ky == 0):
+            if (k.x == 0) and (k.y == 0):
                 F[row].append(ComplexNumber(0))
                 continue
 
@@ -51,25 +59,57 @@ def h0_tilde2(N, L, W, A = 1, g = 9.81):
 
     return F
 
+def h_tilde2(h0, t, N, L, W, A = 1, g = 9.81):
+    h = []
+
+    for row in range(N):
+        h.append([])
+        for column in range(N):
+            n1 = row
+            m1 = column
+
+            n2 = N - row
+            m2 = N - column
+
+            if (n2 == N):
+                n2 = n1
+            if (m2 == N):
+                m2 = m1
+
+            k = to_k(n1, m1, N, N, L)
+
+            if (k.x == 0 and k.y == 0):
+                h[row].append(ComplexNumber(0))
+                continue
+
+            w = math.sqrt(k.magnitude() / g)
+
+            component = h0[n1][m1] * ComplexNumber.exp(ComplexNumber(0, w * t)) + h0[n2][m2].conjugate() * ComplexNumber.exp(ComplexNumber(0, -w * t))
+            h[row].append(component)
+
+    return h
+
 
 def main():
     g = 9.81
     A = 4
-    W = Vector2(30, 30)
+    W = Vector2(28, 28)
     N = 256
     L = 1000
 
     h0_t = h0_tilde2(N, L, W, A, g)
+    h_t = h_tilde2(h0_t, 0, N, L, W, A, g)
 
-    h0_image = Image.new(mode = "RGB", size = (N, N))
-    h0_pixels = h0_image.load()
+    h_image = Image.new(mode = "RGB", size = (N, N))
+    h_pixels = h_image.load()
 
     for row in range(N):
         for column in range(N):
-            num = h0_t[row][column]
-            h0_pixels[row, column] = (int(255 * num.real), int(255 * num.imaginary), 0)
+            num = h_t[row][column]
+            h_pixels[row, column] = (int(255 * num.real), int(255 * num.imaginary), 0)
 
-    h0_image.show()
+    h_image.show()
+    h_image.save("test.png", "PNG")
         
 
 
