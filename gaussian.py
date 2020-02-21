@@ -1,12 +1,17 @@
+#!/usr/bin/env python3
+
 import random
 import math
-import matplotlib.pyplot as plt
-import numpy as np
+
+# Optionally import test libraries
+if __name__ == "__main__":
+    import matplotlib.pyplot as plt
+    import numpy as np
 
 def generate_uniform_distribution(length):
     result = []
 
-    for _ in xrange(length):
+    for _ in range(length):
         result.append(random.uniform(0, 1))
 
     return result
@@ -18,7 +23,7 @@ def generate_gaussian_distribution(length):
     z1 = []
     z2 = []
 
-    for x in xrange(length):
+    for x in range(length):
         U1 = dist1[x]
         U2 = dist2[x]
 

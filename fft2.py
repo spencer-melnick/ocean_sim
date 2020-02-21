@@ -1,13 +1,16 @@
 import math
-import copy
-import numpy as np
+
+# Optionally import test libraries
+if __name__ == "__main__":
+    import copy
+    import numpy as np
 
 from complex import ComplexNumber
 
 def reverse_bit(value, num_bits):
     result = 0
 
-    for i in xrange(0, num_bits):
+    for i in range(0, num_bits):
         new_bit_index = num_bits - (1 + i)
         bit_value = (value & (1 << i)) >> i
 
@@ -18,12 +21,12 @@ def reverse_bit(value, num_bits):
 def generate_twidde(N):
     w = []
 
-    for k in xrange(N / 2):
+    for k in range(N // 2):
         power = ComplexNumber(0, 2 * math.pi * k / N)
         twiddle = ComplexNumber.exp(power)
         w.append(twiddle)
 
-    for k in xrange(N / 2):
+    for k in range(N // 2):
         w.append(-w[k])
 
     return w
@@ -33,7 +36,7 @@ def fft_horizontal(F, row_index = 0):
     num_steps = int(math.log(N, 2))
 
     # In place bit reverse the input
-    for x in xrange(N / 2):
+    for x in range(N // 2):
         y = reverse_bit(x, num_steps)
 
         temp = F[row_index][x]
@@ -43,20 +46,20 @@ def fft_horizontal(F, row_index = 0):
     # Pregenerate twiddle factors
     w = generate_twidde(N)
 
-    for step in xrange(num_steps):
+    for step in range(num_steps):
         wing_length = pow(2, step)
         k_increment = wing_length * 2
 
-        for n in xrange(N):
+        for n in range(N):
             if (n % k_increment) >= wing_length:
                 # We are at the bottom of a wing, skip
                 continue
 
             a_n = n
-            b_n= a_n + wing_length
+            b_n = a_n + wing_length
 
             # Perform a butterfly operation
-            k = (a_n * N / k_increment) % N
+            k = (a_n * N // k_increment) % N
             u = F[row_index][a_n]
             t = F[row_index][b_n] * w[k]
 
@@ -70,7 +73,7 @@ def fft_vertical(F, column_index = 0):
     num_steps = int(math.log(N, 2))
 
     # In place bit reverse the input
-    for x in xrange(N / 2):
+    for x in range(N // 2):
         y = reverse_bit(x, num_steps)
 
         temp = F[x][column_index]
@@ -80,20 +83,20 @@ def fft_vertical(F, column_index = 0):
     # Pregenerate twiddle factors
     w = generate_twidde(N)
 
-    for step in xrange(num_steps):
+    for step in range(num_steps):
         wing_length = pow(2, step)
         k_increment = wing_length * 2
 
-        for n in xrange(N):
+        for n in range(N):
             if (n % k_increment) >= wing_length:
                 # We are at the bottom of a wing, skip
                 continue
 
             a_n = n
-            b_n= a_n + wing_length
+            b_n = a_n + wing_length
 
             # Perform a butterfly operation
-            k = (a_n * N / k_increment) % N
+            k = (a_n * N // k_increment) % N
             u = F[a_n][column_index]
             t = F[b_n][column_index] * w[k]
 
@@ -105,10 +108,10 @@ def fft_vertical(F, column_index = 0):
 def fft2(f):
     F = copy.deepcopy(f)
 
-    for row in xrange(len(F)):
+    for row in range(len(F)):
         fft_horizontal(F, row)
 
-    for column in xrange(len(F[0])):
+    for column in range(len(F[0])):
         fft_vertical(F, column)
 
     return F
@@ -125,8 +128,8 @@ def main():
     complex_seq = copy.deepcopy(seq)
 
     # Convert all real numbers to complex numbers
-    for row in xrange(len(complex_seq)):
-        for column in xrange(len(complex_seq[row])):
+    for row in range(len(complex_seq)):
+        for column in range(len(complex_seq[row])):
             complex_seq[row][column] = ComplexNumber(complex_seq[row][column])
 
     f = fft2(complex_seq)
