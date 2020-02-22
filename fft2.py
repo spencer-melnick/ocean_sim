@@ -1,8 +1,8 @@
 import math
+import copy
 
 # Optionally import test libraries
 if __name__ == "__main__":
-    import copy
     import numpy as np
 
 from complex import ComplexNumber

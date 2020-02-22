@@ -18,6 +18,14 @@ class Vector2:
         y = self.y * obj
         return Vector2(x, y)
 
+    def __rmul__(self, obj):
+        return self * obj
+
+    def __neg__(self):
+        x = -self.x
+        y = -self.y
+        return Vector2(x, y)
+
     def __truediv__(self, obj):
         x = self.x / obj
         y = self.y / obj

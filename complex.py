@@ -29,6 +29,11 @@ class ComplexNumber:
             imaginary = self.imaginary * obj
         return ComplexNumber(real, imaginary)
 
+    def __truediv__(self, obj):
+        real = self.real / obj
+        imaginary = self.imaginary / obj
+        return ComplexNumber(real, imaginary)
+
     def __rmul__(self, obj):
         return self * obj
 
@@ -39,6 +44,9 @@ class ComplexNumber:
 
     def __str__(self):
         return "{}+{}i".format(self.real, self.imaginary)
+
+    def magnitude(self):
+        return math.sqrt(self.real * self.real + self.imaginary * self.imaginary)
 
     def conjugate(self):
         real = self.real

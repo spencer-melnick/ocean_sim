@@ -16,6 +16,18 @@ def generate_uniform_distribution(length):
 
     return result
 
+def gaussian_pair():
+    U1 = random.uniform(0, 1)
+    U2 = random.uniform(0, 1)
+
+    A = math.sqrt(-2 * math.log(U1))
+    theta = 2 * math.pi * U2
+
+    Z1 = A * math.cos(theta)
+    Z2 = A * math.sin(theta)
+
+    return Z1, Z2
+
 def generate_gaussian_distribution(length):
     dist1 = generate_uniform_distribution(length)
     dist2 = generate_uniform_distribution(length)

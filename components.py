@@ -44,8 +44,6 @@ def h0_tilde2(N, L, W, A = 1, g = 9.81):
     '''
     F = []
 
-    g1, g2 = gaussian.gaussian2(N, N)
-
     for row in range(N):
         F.append([])
         for column in range(N):
@@ -55,7 +53,13 @@ def h0_tilde2(N, L, W, A = 1, g = 9.81):
                 F[row].append(ComplexNumber(0))
                 continue
 
-            F[row].append(h0_tilde(k, W, g1[row][column], g2[row][column], A, g))
+            (g1, g2) = gaussian.gaussian_pair()
+            h1 = h0_tilde(k, W, g1, g2, A, g)
+
+            (g1, g2) = gaussian.gaussian_pair()
+            h2 = h0_tilde(-k, W, g1, g2, A, g)
+
+            F[row].append((h1, h2))
 
     return F
 
@@ -84,7 +88,9 @@ def h_tilde2(h0, t, N, L, W, A = 1, g = 9.81):
 
             w = math.sqrt(k.magnitude() / g)
 
-            component = h0[n1][m1] * ComplexNumber.exp(ComplexNumber(0, w * t)) + h0[n2][m2].conjugate() * ComplexNumber.exp(ComplexNumber(0, -w * t))
+            (h0_1, h0_2) = h0[n1][m1]
+
+            component = h0_1 * ComplexNumber.exp(ComplexNumber(0, w * t)) + h0_2.conjugate() * ComplexNumber.exp(ComplexNumber(0, -w * t))
             h[row].append(component)
 
     return h
