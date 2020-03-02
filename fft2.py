@@ -36,12 +36,13 @@ def fft_horizontal(F, row_index = 0):
     num_steps = int(math.log(N, 2))
 
     # In place bit reverse the input
-    for x in range(N // 2):
+    for x in range(N):
         y = reverse_bit(x, num_steps)
-
-        temp = F[row_index][x]
-        F[row_index][x] = F[row_index][y]
-        F[row_index][y] = temp
+        
+        if (y < x):
+            temp = F[row_index][x]
+            F[row_index][x] = F[row_index][y]
+            F[row_index][y] = temp
 
     # Pregenerate twiddle factors
     w = generate_twidde(N)
@@ -73,12 +74,13 @@ def fft_vertical(F, column_index = 0):
     num_steps = int(math.log(N, 2))
 
     # In place bit reverse the input
-    for x in range(N // 2):
+    for x in range(N):
         y = reverse_bit(x, num_steps)
 
-        temp = F[x][column_index]
-        F[x][column_index] = F[y][column_index]
-        F[y][column_index] = temp
+        if (y < x):
+            temp = F[x][column_index]
+            F[x][column_index] = F[y][column_index]
+            F[y][column_index] = temp
 
     # Pregenerate twiddle factors
     w = generate_twidde(N)

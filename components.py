@@ -29,7 +29,7 @@ def phillips(K, W, A = 1, g = 9.81):
     dot = Vector2.dot(k, w)
     dot2 = dot * dot
 
-    return A * math.exp(-1 / (k2 * L * L)) * dot2 * math.exp(-k2 * l * l) / (k2 * k2)
+    return A * math.exp(-1 / (k2 * L * L)) * dot2 * dot2 * dot2 * dot2 * math.exp(-k2 * l * l) / (k2 * k2)
 
 def h0_tilde(K, W, r, i, A = 1, g = 9.81):
     return (1 / math.sqrt(2)) * ComplexNumber(r, i) * math.sqrt(phillips(K, W, A, g))

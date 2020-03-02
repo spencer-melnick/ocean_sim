@@ -22,8 +22,8 @@ def main():
     g = 9.81
     A = 1
     W = Vector2(28, 28)
-    N = 32
-    L = 100
+    N = 64
+    L = 200
 
     sdl2.ext.init()
     window = sdl2.ext.Window("Test", (N, N))
